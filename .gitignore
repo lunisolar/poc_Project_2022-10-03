@@ -40,3 +40,8 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Project_2022-10-03 ###
+/.idea/
+/modules/springWebFlux/TDB2/
+/TDB2/

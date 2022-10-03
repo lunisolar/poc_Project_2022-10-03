@@ -1,0 +1,52 @@
+Configuration:
+  status: info
+  name: Plugin Logging configuration
+
+  appenders:
+    Console:
+      name: Console
+      PatternLayout:
+        Pattern: "%d{ISO8601} [Project_2022-10-03] %-5level - %-49.49logger{5~.9~.9~.5~} - %highlight{%msg%n}"
+        Charset: "UTF-8"
+
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: Console
+        - ref: Idea
+
+    Logger:
+      - name: eu.lnslr.example
+        level: debug
+        additivity: false
+        AppenderRef:
+          - ref: Console
+      - name: tech.lnkd
+        level: debug
+        additivity: false
+        AppenderRef:
+          - ref: Console
+      - name: eu.lunisolar
+        level: debug
+        additivity: false
+        AppenderRef:
+          - ref: Console
+      - name: eu.lunisolar.lava.rdf.spring.tx
+        level: warn
+        additivity: false
+        AppenderRef:
+          - ref: Console
+      - name: org.apache.jena.riot
+        level: fatal
+        additivity: false
+        AppenderRef:
+          - ref: Console
+      - name: org.apache.jena.sparql.engine
+#        org.apache.jena.sparql.engine.QueryIterFilterExpr logging on warn then ignores it.
+        level: fatal
+        additivity: false
+        AppenderRef:
+          - ref: Console
+

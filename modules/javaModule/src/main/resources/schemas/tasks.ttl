@@ -1,0 +1,87 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xs:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix tasks: <http://project_2022-10-03.example.lnslr.eu/tasks#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+
+<http://project_2022-10-03.example.lnslr.eu/tasks>
+    a               owl:Ontology ;
+    skos:prefLabel  "Tasks Schema" ;
+    skos:definition "Small improvised schema for Tasks." ;
+.
+
+tasks:TasksGraph
+    a              owl:Thing, rdfs:Resource ;
+    skos:prefLabel "Default graph fro string Tasks" ;
+.
+
+tasks:Task
+    a               rdfs:Class, owl:Class ;
+    skos:prefLabel  "Task" ;
+    skos:definition "Task resource containing information about the task"
+.
+
+tasks:input
+    a               rdf:Property, owl:ObjectProperty ;
+    rdfs:domain     tasks:Task ;
+    skos:prefLabel  "input" ;
+    skos:definition "Input for the task." ;
+    rdfs:range      xs:string ;
+.
+
+tasks:pattern
+    a               rdf:Property, owl:ObjectProperty ;
+    rdfs:domain     tasks:Task ;
+    skos:prefLabel  "pattern" ;
+    skos:definition "Second input for the task." ;
+    rdfs:range      xs:string ;
+.
+
+tasks:status
+    a               rdf:Property, owl:ObjectProperty ;
+    rdfs:domain     tasks:Task ;
+    skos:prefLabel  "input" ;
+    skos:definition "Progress information: status" ;
+    rdfs:range      xs:String ;
+.
+
+tasks:progress
+    a               rdf:Property, owl:ObjectProperty ;
+    rdfs:domain     tasks:Task ;
+    skos:prefLabel  "input" ;
+    skos:definition "Progress information: progress" ;
+    rdfs:range      xs:String ;
+.
+
+tasks:createdAt
+    a               rdf:Property, owl:ObjectProperty ;
+    rdfs:domain     tasks:Task ;
+    skos:prefLabel  "created at" ;
+    skos:definition "Date and time of tasks creation." ;
+    rdfs:range      xs:long ;
+.
+
+tasks:updatedAt
+    a               rdf:Property, owl:ObjectProperty ;
+    rdfs:domain     tasks:Task ;
+    skos:prefLabel  "updated at" ;
+    skos:definition "Date and time of last update about the task." ;
+    rdfs:range      xs:long ;
+.
+
+tasks:resultPosition
+    a               rdf:Property, owl:ObjectProperty ;
+    rdfs:domain     tasks:Task ;
+    skos:prefLabel  "resultPosition" ;
+    skos:definition "resultPosition of the task" ;
+    rdfs:range      xs:long ;
+.
+
+tasks:resultTypos
+    a               rdf:Property, owl:ObjectProperty ;
+    rdfs:domain     tasks:Task ;
+    skos:prefLabel  "resultTypos" ;
+    skos:definition "resultTypos of the task" ;
+    rdfs:range      xs:long ;
+.
