@@ -29,7 +29,7 @@ public class Task(
 
     companion object TasksIdentity {
 
-        private const val idPrefix = TasksNs.`Task$` + "_";
+        private const val idPrefix = TasksNs.Task + "_";
 
         fun newId(): String = idPrefix + UUID.randomUUID()
         fun simpleId(id: String?) = str(id).removeStart(idPrefix).value()

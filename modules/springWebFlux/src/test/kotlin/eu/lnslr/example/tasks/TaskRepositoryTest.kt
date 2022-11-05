@@ -51,16 +51,15 @@ internal class TaskRepositoryTest {
                 state.createdTask = state.repo.save(Task("123", "abc"))
             }.then { state ->
 
-                // TODO magma library: elephant in the room: the `$` suffixes that require escaping with ``
                 attest(state.ds)
-                    .`must$`(RdfP::`containInCount$`, g().s().p().o(), 6)
-                    .`must$`(RdfP::`containInCount$`, g(graph).s().p().o(), 6)
-                    .`must$`(RdfP::`containOne$`, g(graph).s().p(type).a(TasksRs.Task))
-                    .`must$`(RdfP::`containOne$`, g(graph).s().p(input).v("123"))
-                    .`must$`(RdfP::`containOne$`, g(graph).s().p(pattern).v("abc"))
-                    .`must$`(RdfP::`containOne$`, g(graph).s().p(status).v(Status.CREATED))
-                    .`must$`(P.`have$`({ ds: Dataset -> RdfP.theObject(ds, g(graph).s().p(createdAt).o()) }, RdfP::`dataType$`, XS.DATETIME))
-                    .`must$`(P.`have$`({ ds: Dataset -> RdfP.theObject(ds, g(graph).s().p(updatedAt).o()) }, RdfP::`dataType$`, XS.DATETIME))
+                    .mustEx(RdfP::containInCountEx, g().s().p().o(), 6)
+                    .mustEx(RdfP::containInCountEx, g(graph).s().p().o(), 6)
+                    .mustEx(RdfP::containOneEx, g(graph).s().p(type).a(TasksRs.Task))
+                    .mustEx(RdfP::containOneEx, g(graph).s().p(input).v("123"))
+                    .mustEx(RdfP::containOneEx, g(graph).s().p(pattern).v("abc"))
+                    .mustEx(RdfP::containOneEx, g(graph).s().p(status).v(Status.CREATED))
+                    .mustEx(P.haveEx({ ds: Dataset -> RdfP.theObject(ds, g(graph).s().p(createdAt).o()) }, RdfP::dataTypeEx, XS.DATETIME))
+                    .mustEx(P.haveEx({ ds: Dataset -> RdfP.theObject(ds, g(graph).s().p(updatedAt).o()) }, RdfP::dataTypeEx, XS.DATETIME))
 
                 val created = state.ds.quads().g(graph).s().p(createdAt).o().theOne(As::aDateTime).toLocal()
                 val updated = state.ds.quads().g(graph).s().p(updatedAt).o().theOne(As::aDateTime).toLocal()
@@ -75,20 +74,20 @@ internal class TaskRepositoryTest {
                 state.repo.save(state.createdTask!!)
             }.then { state ->
                 attest(state.ds)
-                    .`must$`(RdfP::`containInCount$`, g().s().p().o(), 6)
-                    .`must$`(RdfP::`containInCount$`, g(graph).s().p().o(), 6)
-                    .`must$`(RdfP::`containOne$`, g(graph).s().p(type).a(TasksRs.Task))
-                    .`must$`(RdfP::`containOne$`, g(graph).s().p(input).v("123"))
-                    .`must$`(RdfP::`containOne$`, g(graph).s().p(pattern).v("abc"))
-                    .`must$`(RdfP::`containOne$`, g(graph).s().p(status).v(Status.FINISHED.name))  // TODO extension methods for Kotlin to avoid casting (as Int)?
-                    .`must$`(P.`have$`({ ds: Dataset -> RdfP.theObject(ds, g(graph).s().p(createdAt).o()) }, RdfP::`dataType$`, XS.DATETIME))
-                    .`must$`(P.`have$`({ ds: Dataset -> RdfP.theObject(ds, g(graph).s().p(updatedAt).o()) }, RdfP::`dataType$`, XS.DATETIME))
+                    .mustEx(RdfP::containInCountEx, g().s().p().o(), 6)
+                    .mustEx(RdfP::containInCountEx, g(graph).s().p().o(), 6)
+                    .mustEx(RdfP::containOneEx, g(graph).s().p(type).a(TasksRs.Task))
+                    .mustEx(RdfP::containOneEx, g(graph).s().p(input).v("123"))
+                    .mustEx(RdfP::containOneEx, g(graph).s().p(pattern).v("abc"))
+                    .mustEx(RdfP::containOneEx, g(graph).s().p(status).v(Status.FINISHED.name))  // TODO extension methods for Kotlin to avoid casting (as Int)?
+                    .mustEx(P.haveEx({ ds: Dataset -> RdfP.theObject(ds, g(graph).s().p(createdAt).o()) }, RdfP::dataTypeEx, XS.DATETIME))
+                    .mustEx(P.haveEx({ ds: Dataset -> RdfP.theObject(ds, g(graph).s().p(updatedAt).o()) }, RdfP::dataTypeEx, XS.DATETIME))
 
                 val created = state.ds.quads().g(graph).s().p(createdAt).o().theOne(As::aDateTime).toLocal()
                 val updated = state.ds.quads().g(graph).s().p(updatedAt).o().theOne(As::aDateTime).toLocal()
 
                 attest(created)
-                    .`must$`(Be::`equal$`, longTimeAgo)
+                    .mustEx(Be::equalEx, longTimeAgo)
                     .mustNot(EqualEnough::equalEnough, updated, "Update date ")
             }
         }.step("Read") {
@@ -136,16 +135,16 @@ internal class TaskRepositoryTest {
                         .map(func(Task::input))
                         .toList()
                 )
-                    .`must$`(Have::`size$`, 3)
-                    .`must$`(Have::`containExactly$`, arrayOf("4", "3", "2"))
+                    .mustEx(Have::sizeEx, 3)
+                    .mustEx(Have::containExactlyEx, arrayOf("4", "3", "2"))
 
                 attest(
                     state.repo.findAll(2, 3)
                         .map(func(Task::input))
                         .toList()
                 )
-                    .`must$`(Have::`size$`, 2)
-                    .`must$`(Have::`containExactly$`, arrayOf("2", "1"))
+                    .mustEx(Have::sizeEx, 2)
+                    .mustEx(Have::containExactlyEx, arrayOf("2", "1"))
 
             }
         }

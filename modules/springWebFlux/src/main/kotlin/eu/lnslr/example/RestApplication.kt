@@ -51,7 +51,7 @@ fun main(args: Array<String>) {
     log.logger.info("Triplestore: $dsUrl")
 
     // just to load XS
-    check(XS.DURATION.identity()).`must$`(Be::`equal$`, "http://www.w3.org/2001/XMLSchema#duration")
+    check(XS.DURATION.identity()).mustEx(Be::equalEx, "http://www.w3.org/2001/XMLSchema#duration")
 
     // lava-rdf:jena:tdb2:file:///D:/p/.r/tech.lnkd.editor.intellij/
 

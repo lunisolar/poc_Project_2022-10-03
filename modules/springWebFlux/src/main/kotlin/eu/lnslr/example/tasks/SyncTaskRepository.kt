@@ -119,13 +119,12 @@ open class SyncTaskRepository(private val dataset: Dataset) : RdfRepository<Task
     }
 
     // We have direct access to Dataset, we can query just for Id(s) and read other values later without a cost.
-    // TODO TasksNs.Task$   - again $ requires escaping in Kotlin
     private val listQuery = rdf().querying().prepared(
         """
         SELECT ?id
         WHERE {
-            ?id a <${TasksNs.`Task$`}> . 
-            ?id <${TasksNs.`createdAt$`}> ?createdAt .  
+            ?id a <${TasksNs.Task}> . 
+            ?id <${TasksNs.createdAt}> ?createdAt .  
         }
         ORDER BY DESC(?createdAt)
     """.trimIndent()
@@ -160,8 +159,8 @@ open class SyncTaskRepository(private val dataset: Dataset) : RdfRepository<Task
         """
         SELECT ?id
         WHERE {
-            ?id <${TasksNs.`status$`}> "${Status.CREATED}" .
-            ?id a <${TasksNs.`Task$`}> .
+            ?id <${TasksNs.status}> "${Status.CREATED}" .
+            ?id a <${TasksNs.Task}> .
         }
         ORDER BY ASC(?createdAt)
         LIMIT 1
