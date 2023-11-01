@@ -10,11 +10,11 @@ import eu.lunisolar.lava.lang.seq.Seq
 import eu.lunisolar.lava.lang.time.AnyDateTime
 import eu.lunisolar.lava.rdf.api.DefaultRdf.rdf
 import eu.lunisolar.lava.rdf.api.data.Id
+import eu.lunisolar.lava.rdf.api.parts.spo.AsO
 import eu.lunisolar.lava.rdf.api.schema.RdfRs
 import eu.lunisolar.lava.rdf.api.t4.Dataset
 import eu.lunisolar.lava.rdf.spring.RdfRepository
 import eu.lunisolar.magma.basics.exceptions.X
-import eu.lunisolar.magma.func.function.LFunction.func
 import eu.lunisolar.magma.func.supp.check.Checks.arg
 import eu.lunisolar.magma.func.supp.opt.Opt
 import org.apache.logging.log4j.kotlin.Logging
@@ -29,17 +29,10 @@ import java.time.LocalDateTime
 // Made public only as a replacement for REST client.
 open class SyncTaskRepository(private val dataset: Dataset) : RdfRepository<Task>, Logging {
 
-//    @Lazy
-//    @Inject
-//    private lateinit var dataset: Dataset
-
     private fun exists(id: Id) = myGraph().contains().s(id).p(RdfRs.type).o()
     private fun existsAndOfType(id: Id) = myGraph().contains().s(id).p(RdfRs.type).a(TasksRs.Task)
 
-    // TODO
-    //  Compiler (Kotlin) not selecting specialized type for matching overloaded method .identity() calls should be not needed!
-    //  It seems to work in other places without issue.
-    private fun myGraph() = dataset.graph(TasksRs.TasksGraph.identity()).orElseThrow(X::state)
+    private fun myGraph() = dataset.graph(TasksRs.TasksGraph).orElseThrow(X::state)
 
     override fun <S : Task> save(entity: S) = entity.apply {
         val now = LocalDateTime.now()
@@ -88,8 +81,8 @@ open class SyncTaskRepository(private val dataset: Dataset) : RdfRepository<Task
         if (existsById(id)) {
             val prop = myGraph().resource(id).properties()
 
-            val position = prop.p(TasksRs.resultPosition).aSafeInt().nullable()
-            val typos = prop.p(TasksRs.resultTypos).aSafeInt().nullable()
+            val position = prop.p(TasksRs.resultPosition).aOneBy(AsO::isRegularInt).nullable()
+            val typos = prop.p(TasksRs.resultTypos).aOneBy(AsO::isRegularInt).nullable()
 
             var result: Result? = null
             if (position != null || typos != null) {
@@ -101,16 +94,16 @@ open class SyncTaskRepository(private val dataset: Dataset) : RdfRepository<Task
             return Opt.of(
                 Task(
                     id.identity(),
-                    prop.p(TasksRs.input).altSafe(""),
-                    prop.p(TasksRs.pattern).altSafe(""),
+                    prop.p(TasksRs.input).aOneBy(AsO::isRegularStr).alt(""),
+                    prop.p(TasksRs.pattern).aOneBy(AsO::isRegularStr).alt(""),
 
-                    prop.p(TasksRs.status).aSafeEnum(Status::class.java).nullable(),
-                    prop.p(TasksRs.progress).altSafe(null as String?),
+                    prop.p(TasksRs.status).aOneBy(AsO::isRegularStr).filterEnum(Status::class.java).nullable(),
+                    prop.p(TasksRs.progress).aOneBy(AsO::isRegularStr).alt(null as String?),
 
                     result,
 
-                    prop.p(TasksRs.createdAt).aSafeValue(XS.DATETIME).map(AnyDateTime::toLocal).orElse(null),
-                    prop.p(TasksRs.updatedAt).aSafeValue(XS.DATETIME).map(AnyDateTime::toLocal).orElse(null)
+                    prop.p(TasksRs.createdAt).aOneBy(AsO::isRegular, XS.DATETIME).map(AnyDateTime::toLocal).orElse(null),
+                    prop.p(TasksRs.updatedAt).aOneBy(AsO::isRegular, XS.DATETIME).map(AnyDateTime::toLocal).orElse(null)
                 )
             )
         }
@@ -134,22 +127,21 @@ open class SyncTaskRepository(private val dataset: Dataset) : RdfRepository<Task
         var params = rdf().querying().params()
         return dataset.querying()
             // TODO lunisolar-lava: I Thought the proxy issue ws resolved (dataset.optAsDataset().get())
-            .execute(listQuery, dataset.optAsDataset().get(), params)
+            .execute(listQuery, dataset.unionGraph(), params)
             .stream()
-            // TODO unlike Java, Kotlin cannot select overloaded map method here (without explicit reference to LFunction.func)
-            .map(func { it.id("id") })
-            .map(func { rdf().id(it)!! })
+            .map { it.id("id") }
+            .map { rdf().id(it)!! }
     }
 
-    private fun allTasks(): Seq<Task> = all().optMap(func { findById_(it) })
+    private fun allTasks(): Seq<Task> = all().optMap{ findById_(it) }
 
     private fun allTasks(offset: Long, limit: Long): Seq<Task> = all()
         .skip(arg(offset, "offset").mustBeGreaterEqual(0).value())
         .limit(arg(limit, "limit").mustBeGreaterEqual(1).value())
-        .optMap(func { findById_(it) })
+        .optMap{ findById_(it) }
 
     @Transactional
-    override fun findAll(): Seq<Task> = all().optMap(func { findById_(it) })
+    override fun findAll(): Seq<Task> = all().optMap{ findById_(it) }
 
     @Transactional
     open fun findAll(offset: Long, limit: Long): Seq<Task> = allTasks(offset, limit);
@@ -170,10 +162,10 @@ open class SyncTaskRepository(private val dataset: Dataset) : RdfRepository<Task
     @Transactional
     open fun nextToProcess(): Opt<Task> = this.dataset.querying()
         // TODO lunisolar-lava: I Thought the proxy issue ws resolved (dataset.optAsDataset().get())
-        .execute(availableToProcess, this.dataset.optAsDataset().get(), rdf().querying().params())
+        .execute(availableToProcess, dataset.unionGraph(), rdf().querying().params())
         // TODO lunisolar-lava - seems that shortcut for single value is only availabel for non-optional literal cases - add shortcut variants for optionality and Id
         .stream().aOne().map { row -> row.id("id") }
-        .flatMap(func { findById_(it) })
+        .flatMap{ findById_(it) }
 
     private fun lock(task: Task) = save(task.apply { status = Status.RUNNING })
 

@@ -5,11 +5,9 @@ plugins {
 
 dependencies {
 
-    implementation(Meta.Deps.lavaRdfJena)
-    implementation(Meta.Deps.lavaRdfShaclJena)
+    val deps = Deps(project)
 
-    implementation(Meta.Deps.lavaRdfSpringStarter) {
-        exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
-    }
-    
+    implementation(deps.libs["lava-rdf-jena"])
+    implementation(deps.libs["lava-rdf-shacl-jena"])
+
 }

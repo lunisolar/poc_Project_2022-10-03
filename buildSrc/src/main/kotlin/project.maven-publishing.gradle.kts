@@ -6,7 +6,7 @@ plugins {
 publishing {
     publications {
 
-        create<MavenPublication>(Meta.Build.publicationName) {
+        create<MavenPublication>(Project2022.publicationName) {
             from(components["java"])
         }
 

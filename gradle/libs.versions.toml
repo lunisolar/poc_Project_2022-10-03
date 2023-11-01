@@ -1,0 +1,88 @@
+[versions]
+
+kotlin = "1.8.20"
+kotlin-lombok-plugin = "1.8.20"
+
+lombok = "1.18.26"
+magma = "4.0.0-SNAPSHOT"
+lava = "0.3.0-SNAPSHOT"
+log4j2 = "2.20.0"
+jackson = "2.13.3"
+assertJ = "3.20.2"
+jmh = "1.22"
+junit = "5.6.0"
+
+spring = "5.3.22"
+spring-data = "2.7.2"
+spring-boot = "2.7.1"
+sjunit = "5.8.1"
+
+[libraries]
+
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+magma-func = { module = "eu.lunisolar.magma:magma-func", version.ref = "magma" }
+magma-func-builder = { module = "eu.lunisolar.magma:magma-func-builder", version.ref = "magma" }
+magma-func-supp = { module = "eu.lunisolar.magma:magma-func-supp", version.ref = "magma" }
+magma-asserts = { module = "eu.lunisolar.magma:magma-asserts", version.ref = "magma" }
+magma-test = { module = "eu.lunisolar.magma:magma-test", version.ref = "magma" }
+
+lava-shades-rdf = { module = "eu.lunisolar.lava.shades:lava-shades-rdf", version.ref = "lava" }
+lava-lang = { module = "eu.lunisolar.lava:lava-lang", version.ref = "lava" }
+lava-rdf-api = { module = "eu.lunisolar.lava:lava-rdf-api", version.ref = "lava" }
+lava-rdf-jena = { module = "eu.lunisolar.lava:lava-rdf-jena", version.ref = "lava" }
+lava-rdf-shacl-jena = { module = "eu.lunisolar.lava:lava-rdf-jena-shacl", version.ref = "lava" }
+lava-rdf-to-java = { module = "eu.lunisolar.lava:lava-rdf-to-java", version.ref = "lava" }
+lava-rdf-spring-starter = { module = "eu.lunisolar.lava:lava-rdf-spring-starter", version.ref = "lava" }
+lava-rdf-get = { module = "eu.lunisolar.lava:lava-rdf-get", version.ref = "lava" }
+lava-rdf-get-lava = { module = "eu.lunisolar.lava:lava-rdf-get-lava", version.ref = "lava" }
+lava-rdf-get-lov = { module = "eu.lunisolar.lava:lava-rdf-get-lov", version.ref = "lava" }
+
+log4j-bom = { module = "org.apache.logging.log4j:log4j-bom", version.ref = "log4j2" }
+log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j2" }
+log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j2" }
+log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j2" }
+log4j-api-kotlin = { module = "org.apache.logging.log4j:log4j-api-kotlin", version = "1.2.0" }
+
+jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "jackson" }
+jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+xerces = { module = "xerces:xercesImpl", version = "2.12.2" }
+
+kotlin-std = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+
+sentry = { module = "io.sentry:sentry", version = "6.12.1" }
+j2html = { module = "com.j2html:j2html", version = "1.5.0" }
+
+caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version = "3.0.3" }
+
+junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
+junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit" }
+spock = { module = "org.spockframework:spock-core", version = "2.1-groovy-3.0" }
+groovy-bom = { group = "org.codehaus.groovy", name = "groovy-all", version = "3.0.12" }
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertJ" }
+jmockit = { module = "org.jmockit:jmockit", version = "1.49" }
+jmh-core = { module = "org.openjdk.jmh:jmh-core", version.ref = "jmh" }
+jmh-generator-annprocess = { module = "org.openjdk.jmh:jmh-generator-annprocess", version.ref = "jmh" }
+jol-core = { module = "org.openjdk.jol:jol-core", version = "0.9" }
+
+# PLUGIN:
+
+freefairLombok-plugin = { module = "io.freefair.gradle:lombok-plugin", version = "8.0.1" }
+kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-allopen-plugin = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin" }
+kotlin-Lombok-plugin = { module = "org.jetbrains.kotlin:kotlin-lombok", version.ref = "kotlin-lombok-plugin" }
+changelog-plugin = { module = "org.jetbrains.intellij.plugins:gradle-changelog-plugin", version = "1.3.1" }
+intelliJ-plugin = { module = "org.jetbrains.intellij.plugins:gradle-intellij-plugin", version = "1.15.0" }
+grammarKit-plugin = { module = "org.jetbrains.intellij.plugins:gradle-grammarkit-plugin", version = "2022.3.1" }
+
+spring-boot-plugin = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "spring-boot" }
+spring-dep-mgt-plugin = { module = "io.spring.gradle:dependency-management-plugin", version = "1.0.14.RELEASE" }
+
+[bundles]
+
+[plugins]

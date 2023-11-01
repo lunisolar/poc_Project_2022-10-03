@@ -18,7 +18,7 @@ tasks.jar {
     }
 
     // Fixes issue that generated JAR does not include pom.xml (for documentation purposes)
-    val publicationTaskName = "generatePomFileFor${Meta.Build.publicationName}Publication";
+    val publicationTaskName = "generatePomFileFor${Project2022.publicationName}Publication";
     tasks.findByName(publicationTaskName)?.let { task ->
         // By default, JAR does not include pom.
         into("META-INF/maven/${project.group}/${project.name}") {

@@ -4,9 +4,10 @@ plugins {
 }
 
 dependencies {
+    val deps = Deps(project)
 
-    implementation(Meta.Deps.lavaRdfSpringStarter) {
+    implementation(deps.libs["lava-rdf-spring-starter"]) {
         exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
     }
-    
+
 }

@@ -2,37 +2,25 @@ plugins {
     `kotlin-dsl`
 }
 
-repositories {
-    gradlePluginPortal()
-    mavenCentral()
+java {
+    modularity.inferModulePath.set(false)
+
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
 }
 
-object Java {
-    val versionStr = "17"
-    val version = JavaVersion.toVersion(versionStr)
-}
-
-var generatedMeta = "build/generated-meta/src/main"
 
 dependencies {
 
-    val pluginListFile = File("$rootDir/$generatedMeta/resources/plugin.list")
-    if (!pluginListFile.exists()) throw IllegalStateException("plugin.list does not exists: $pluginListFile")
+    implementation(libs.freefairLombok.plugin)
 
-    pluginListFile.forEachLine {
-        implementation(it)
-    }
+    implementation(libs.kotlin.plugin)
+    implementation(libs.kotlin.allopen.plugin)
+    implementation(libs.kotlin.lombok.plugin)
 
+    implementation(libs.changelog.plugin)
+
+    implementation(libs.spring.boot.plugin)
+    implementation(libs.spring.dep.mgt.plugin)
+    
 }
-
-java {
-    modularity.inferModulePath.set(false)
-    sourceCompatibility = Java.version
-    targetCompatibility = Java.version
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = Java.versionStr
-}
-
-sourceSets["main"].java { srcDir("$generatedMeta/kotlin") }
