@@ -24,6 +24,7 @@ buildscript {
 
         gradlePluginPortal()
         mavenCentral()
+        maven ( url="https://jitpack.io" )
     }
 
     dependencies {

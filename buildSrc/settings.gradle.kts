@@ -6,6 +6,7 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven { url = uri("https://cache-redirector.jetbrains.com/intellij-repository/snapshots") }
+        maven ( url="https://jitpack.io" )
     }
 }
 
@@ -15,6 +16,7 @@ dependencyResolutionManagement {
         mavenCentral()
         gradlePluginPortal()
         maven { url = uri("https://cache-redirector.jetbrains.com/intellij-repository/snapshots") }
+        maven ( url="https://jitpack.io" )
     }
     versionCatalogs {
         create("libs") {
