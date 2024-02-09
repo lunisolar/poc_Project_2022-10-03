@@ -12,6 +12,7 @@ import eu.lunisolar.lava.rdf.api.DefaultRdf.rdf
 import eu.lunisolar.lava.rdf.api.data.Id
 import eu.lunisolar.lava.rdf.api.parts.spo.AsO
 import eu.lunisolar.lava.rdf.api.schema.RdfRs
+import eu.lunisolar.lava.rdf.api.t3.ModelAspect
 import eu.lunisolar.lava.rdf.api.t4.Dataset
 import eu.lunisolar.lava.rdf.spring.RdfRepository
 import eu.lunisolar.magma.basics.exceptions.X
@@ -43,7 +44,7 @@ open class SyncTaskRepository(private val dataset: Dataset) : RdfRepository<Task
         if (entity.createdAt == null) entity.createdAt = now
         entity.updatedAt = now
 
-        myGraph().resource(entity.id!!)
+        ModelAspect.modelAspect(myGraph()).resource(entity.id!!)
             .update().p(RdfRs.type).a(TasksRs.Task)
 
             .update().p(TasksRs.input).v(entity.input)
@@ -79,7 +80,7 @@ open class SyncTaskRepository(private val dataset: Dataset) : RdfRepository<Task
 
     override fun findById_(id: Id): Opt<Task> {
         if (existsById(id)) {
-            val prop = myGraph().resource(id).properties()
+            val prop = ModelAspect.modelAspect(myGraph()).resource(id).properties()
 
             val position = prop.p(TasksRs.resultPosition).aOneBy(AsO::isRegularInt).nullable()
             val typos = prop.p(TasksRs.resultTypos).aOneBy(AsO::isRegularInt).nullable()
