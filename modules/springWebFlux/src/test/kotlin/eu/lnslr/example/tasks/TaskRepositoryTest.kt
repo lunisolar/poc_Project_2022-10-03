@@ -46,7 +46,7 @@ internal class TaskRepositoryTest {
                 var readTask: Task? = null
             }
         }.step("Create") {
-            it.`when` { state ->
+            it.`when` { state ->  // TODO another kotlin keyword
                 state.createdTask = state.repo.save(Task("123", "abc"))
             }.then { state ->
 
@@ -60,7 +60,7 @@ internal class TaskRepositoryTest {
                     .mustEx(P.haveEx({ ds: Dataset -> RdfP.theObject(ds, g(graph).s().p(createdAt).o()) }, RdfP::dataTypeEx, XS.DATETIME))
                     .mustEx(P.haveEx({ ds: Dataset -> RdfP.theObject(ds, g(graph).s().p(updatedAt).o()) }, RdfP::dataTypeEx, XS.DATETIME))
 
-                val created = state.ds.quads().g(graph).s().p(createdAt).o().theOneBy(AsO::isOf, XS.DATETIME).toLocal()   // TODO another kotlin keyword
+                val created = state.ds.quads().g(graph).s().p(createdAt).o().theOneBy(AsO::isOf, XS.DATETIME).toLocal()
                 val updated = state.ds.quads().g(graph).s().p(updatedAt).o().theOneBy(AsO::isOf, XS.DATETIME).toLocal()
 
                 attest(created).must(EqualEnough::equalEnough, updated, "Most be equal to the seconds.")
